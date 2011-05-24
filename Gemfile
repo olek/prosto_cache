@@ -15,3 +15,5 @@ group :development do
   gem "roodi", "~> 2.1.0"
   gem "rake", "0.8.7"
 end
+
+gem "hashie", ">= 1.0.0"
