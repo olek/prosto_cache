@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/olek/prosto_cache"
   gem.license = "MIT"
   gem.summary = %Q{Very simple caching for your ActiveRecord models.}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{Use this gem if you want a simple 'enum-like' cache for your models that does not restrict updates, but will stay current with them.}
   gem.email = "olek@woodenbits.com"
   gem.authors = ["Olek Poplavsky"]
   # dependencies defined in Gemfile
