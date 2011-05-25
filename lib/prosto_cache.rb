@@ -12,11 +12,18 @@ Usage:
   cache_accessor_keys %w(scope name)
 3. Your model must have non-nullable column updated_at, add it in migration if it is missing (this field is used for invalidating cache in other ruby processes).
 4. Access cached model object in your code like this
-  YourModel.cache[:key1][:key2]
-
+  Simple case of one key
+    YourModel.cache[:key1]
+  Case of 2 or more keys where it is known ahead of time that all parent keys exist. Looks conventional, but is unreliable because brackets operation on nill will raise an error.
+    YourModel.cache[:key1][:key2][:key3]
+  Case of 2 or more keys where any key may not be present in cache, and expected answer is nil. Looks so-so, but is much more reliable then previos use case.
+    YourModel.cache[[:key1, :key2, :key3]]
 =end
 
+require 'hashie'
+
 module ProstoCache
+  # cache itself, contains pretty much all the logic
   class ProstoModelCache
     attr_accessor :model_class, :cache, :signature, :validated_at, :accessor_keys
 
@@ -29,17 +36,20 @@ module ProstoCache
       self.cache = self.signature = self.validated_at = nil
     end
 
-    def [](name)
-      if name.respond_to?(:to_ary) && !name.blank?
-        name.to_ary.inject(safe_cache) do |memo,n|
-          if memo
-            memo[n]
-          else
-            nil
+    def [](keys)
+      if keys.respond_to?(:to_ary)
+        keys_ary = keys.to_ary
+        if keys_ary.empty?
+          nil
+        else
+          # looks like an array of key was passed in, lets try them one after another, without failing
+          keys_ary.inject(safe_cache) do |memo,key|
+            break unless memo
+            memo[key]
           end
         end
       else
-        safe_cache[name]
+        safe_cache[keys]
       end
     end
 
