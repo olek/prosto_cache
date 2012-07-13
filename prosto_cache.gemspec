@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{prosto_cache}
-  s.version = "0.1.0"
+  s.name = "prosto_cache"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Olek Poplavsky"]
-  s.date = %q{2011-05-25}
-  s.description = %q{Use this gem if you want a simple 'enum-like' cache for your models that does not restrict updates, but will stay current with them.}
-  s.email = %q{olek@woodenbits.com}
+  s.date = "2012-07-13"
+  s.description = "Use this gem if you want a simple 'enum-like' cache for your models that does not restrict updates, but will stay current with them."
+  s.email = "olek@woodenbits.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/prosto_cache.rb",
+    "prosto_cache.gemspec",
     "spec/prosto_cache_spec.rb",
     "spec/spec_helper.rb",
     "vendor/cache/diff-lcs-1.1.2.gem",
@@ -45,11 +46,11 @@ Gem::Specification.new do |s|
     "vendor/cache/sexp_processor-3.0.5.gem",
     "vendor/cache/yard-0.6.8.gem"
   ]
-  s.homepage = %q{http://github.com/olek/prosto_cache}
+  s.homepage = "http://github.com/olek/prosto_cache"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.6.2}
-  s.summary = %q{Very simple caching for your ActiveRecord models.}
+  s.rubygems_version = "1.8.11"
+  s.summary = "Very simple caching for your ActiveRecord models."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
