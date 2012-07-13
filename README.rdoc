@@ -1,9 +1,30 @@
 = prosto_cache
 
-Description goes here.
+This library provides a simple way to cache model and to access this cache in some canonical way.
+Any changes to the model's objects will automatically result in cache reload.
+Cache reload in other ruby processes of same app will be triggered as well, but with some delay (currently up to 60 seconds).
+If delay in cache reloading is not an option, well, this simply library will not work for you, and you have to use something fancier, like Memcached.
+
+Usage:
+1. add ProstoCache mixin to your model
+  class YourModel < ActiveRecord::Base
+    include ProstoCache
+2. Configure cache access keys (optional step, by default cache is accessed by key 'name')
+  cache_accessor_keys %w(scope name)
+3. Your model must have non-nullable column updated_at, add it in migration if it is missing (this field is used for invalidating cache in other ruby processes).
+4. Access cached model object in your code like this
+* Simple case of one key
+
+    YourModel.cache[:key1]
+* Case of 2 or more keys where it is known ahead of time that all parent keys exist. Looks conventional, but is unreliable because brackets operation on nill will raise an error.
+
+    YourModel.cache[:key1][:key2][:key3]
+* Case of 2 or more keys where any key may not be present in cache, and expected answer is nil. Looks so-so, but is much more reliable then previos use case.
+
+    YourModel.cache[[:key1, :key2, :key3]]
 
 == Contributing to prosto_cache
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
