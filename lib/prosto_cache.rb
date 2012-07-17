@@ -18,6 +18,14 @@ Usage:
     YourModel.cache[:key1][:key2][:key3]
   Case of 2 or more keys where any key may not be present in cache, and expected answer is nil. Looks so-so, but is much more reliable then previos use case.
     YourModel.cache[[:key1, :key2, :key3]]
+5. If you want to, you can add extra lookup helpers to the objects that relate to the cached object, that will allow those objects to update 'string' attribute, and that will result in database reference change.
+    class OtherModel < ActiveRecord::Base
+      belongs_to :your_model
+      lookup_enum_for :your_model
+    end
+    
+    This lookup was intertionally not integrated with ActiveRecord since not everybody would want that, and monkey-patching other library (AR) is not really a good thing, even if it results in more magically 'smooth' experience.
+    Principle of least surprise, right?
 =end
 
 require 'hashie'
@@ -138,6 +146,21 @@ module ProstoCache
       def cache_accessor_keys(keys)
         @accessor_keys = keys
       end
+    end
+  end
+    module Extensions
+    def lookup_enum_for(name, enum_class=nil)
+      raise unless name
+      enum_class = name.to_s.classify.constantize unless enum_class
+      define_method("#{name}_with_lookup=") do |o|
+        new_value = o
+        unless o.is_a?(enum_class)
+          new_value = o.blank? ? nil : enum_class[o.to_s]
+        end
+        self.send("#{name}_without_lookup=", new_value)
+      end
+
+      alias_method_chain "#{name}=", :lookup
     end
   end
 end
