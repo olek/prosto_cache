@@ -1,25 +1,49 @@
 = prosto_cache
 
-This library provides a simple way to cache model and to access this cache in some canonical way.
-Any changes to the model's objects will automatically result in cache reload.
-Cache reload in other ruby processes of same app will be triggered as well, but with some delay (currently up to 60 seconds).
-If delay in cache reloading is not an option, well, this simply library will not work for you, and you have to use something fancier, like Memcached.
+prosto_cache provides a simple way to cache enumeration-like models in memory and to access this cache in uniform way.
+
+Here are couple thinks that it will NOT do for you.
+
+- it will not monkey patch rails in attempt to make itself 'totally' easy to use
+- it will not attempt to share/distribute cache
+- it will not cook your breakfeast, it does one thing only, and that thing is in-memory cache
+
+And that is a good thing. Why?
+
+- next time you upgrade your rails things are not likely to break in spectacular way (well, at least not because of this gem)
+- there is a possibility/plan to make it work even for those not using ActiveRecord
+- and most of all - it keeps things SIMPLE (do not confuse with 'easy')
+
+Here are main features of this library:
+
+- cache is accessible in a map-like way, and you can choose and specify ONE way to contruct the key to that map
+- access key can be simple or compound (multi-step)
+- virtual/transient/non-db attributes can be used for keys
+- all cache values are accessible as a plain array
+- changes to the model's objects will automatically result in cache reload when saved to database
+- cache reload in other ruby processes of same app will be triggered as well, but with some delay (currently up to 60 seconds).
+- If delay in cache reloading is not an option for you, well, this library will not work for you, use something fancier, like Memcached.
+- it is possible to invalidate cache by hand, although usually there is no reason to
 
 Usage:
-1. add ProstoCache mixin to your model
+1. Add ProstoCache mixin to your model
   class YourModel < ActiveRecord::Base
     include ProstoCache
 2. Configure cache access keys (optional step, by default cache is accessed by key 'name')
   cache_accessor_keys %w(scope name)
-3. Your model must have non-nullable column updated_at, add it in migration if it is missing (this field is used for invalidating cache in other ruby processes).
+3. Your model MUST have non-nullable column updated_at, add new migration with it if missing
+    (this field is used for invalidating cache in other ruby processes)
 4. Access cached model object in your code like this
 * Simple case of one key
 
     YourModel.cache[:key1]
-* Case of 2 or more keys where it is known ahead of time that all parent keys exist. Looks conventional, but is unreliable because brackets operation on nill will raise an error.
+* Case of 2 or more keys where it is known ahead of time that all parent keys exist.
+  Looks conventional, but is not quite unreliable because brackets operation on nil will raise an error.
+  If you know a good way to make it reliable, let me know!
 
     YourModel.cache[:key1][:key2][:key3]
-* Case of 2 or more keys where any key may not be present in cache, and expected answer is nil. Looks so-so, but is much more reliable then previos use case.
+* Case of 2 or more keys where any key may not be present in cache, and expected answer is nil.
+  Looks so-so, but is much more reliable then previos use case.
 
     YourModel.cache[[:key1, :key2, :key3]]
 
@@ -31,7 +55,9 @@ Usage:
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
 * Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Please try not to mess with the Rakefile, version, or history.
+  If you want to have your own version, or is otherwise necessary, that is fine, but please
+  isolate to its own commit so I can cherry-pick around it.
 
 == Copyright
 
