@@ -120,10 +120,12 @@ module ProstoCache
     end
 
     def query_cache_signature
-      raw_result = ActiveRecord::Base.connection.execute "select max(updated_at) as max_updated_at, max(id) as max_id, count(id) as count from #{model_class.name.tableize}"
+      raw_result = ActiveRecord::Base.connection.execute "select max(updated_at) as max_updated_at, max(id) as max_id, count(id) as count from #{model_class.table_name}"
       array_result = case raw_result.class.name
       when 'Mysql::Result'
         [].tap { |rows| raw_result.each_hash { |h| rows << h } }
+      when 'Mysql2::Result'
+        [].tap { |rows| raw_result.each(:as => :hash) { |h| rows << h } }
       when 'PGresult'
         raw_result.map(&:to_hash)
       else
