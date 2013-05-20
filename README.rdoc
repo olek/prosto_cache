@@ -1,5 +1,7 @@
 = prosto_cache
 
+{<img src="https://travis-ci.org/olek/prosto_cache.png?branch=master" alt="Build Status" />}[https://travis-ci.org/olek/prosto_cache]
+
 prosto_cache provides a simple way to cache enumeration-like models in memory and to access this cache in uniform way.
 
 Here are couple thinks that it will NOT do for you.
