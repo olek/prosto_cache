@@ -65,7 +65,7 @@ module ProstoCache
         hash[key.to_sym] = value
       end
 
-      def_delegators :hash, :to_s, :inspect
+      def_delegators :hash, :to_s, :inspect, :keys, :values
 
       private
 
