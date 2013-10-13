@@ -2,9 +2,9 @@
 
 {<img src="https://travis-ci.org/olek/prosto_cache.png?branch=master" alt="Build Status" />}[https://travis-ci.org/olek/prosto_cache]
 
-prosto_cache provides a simple way to cache enumeration-like models in memory and to access this cache in uniform way.
+prosto_cache provides a simple way to cache enumeration-like models in memory and to access this cache in a uniform way.
 
-Here are couple thinks that it will NOT do for you.
+Here are a couple of things that it will NOT do for you.
 
 - it will not monkey patch rails in attempt to make itself 'totally' easy to use
 - it will not attempt to share/distribute cache
@@ -33,14 +33,14 @@ Usage:
     include ProstoCache
 2. Configure cache access keys (optional step, by default cache is accessed by key 'name')
   cache_accessor_keys %w(scope name)
-3. Your model MUST have non-nullable column updated_at, add new migration with it if missing
+3. Your model MUST have a non-nullable column updated_at, add new migration with it if missing
     (this field is used for invalidating cache in other ruby processes)
 4. Access cached model object in your code like this
 * Simple case of one key
 
     YourModel.cache[:key1]
 * Case of 2 or more keys where it is known ahead of time that all parent keys exist.
-  Looks conventional, but is not quite unreliable because brackets operation on nil will raise an error.
+  Looks conventional, but is not quite reliable because brackets operation on nil will raise an error.
   If you know a good way to make it reliable, let me know!
 
     YourModel.cache[:key1][:key2][:key3]
