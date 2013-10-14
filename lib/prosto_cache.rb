@@ -3,8 +3,8 @@ This library provides a simple way to cache model and to access this cache in so
 Any changes to the model's objects will automatically result in cache reload.
 Cache reload in other ruby processes of same app will be triggered as well, but
 with some delay (currently up to 60 seconds).
-If delay in cache reloading is not an option, well, this simply library will
-not work for you, and you have to use something fancier, like Memcached.
+If the delay in cache reloading is not an option, well, this simple library will
+not work for you, and you will have to use something fancier, like Memcached.
 
 Usage:
 
@@ -37,9 +37,9 @@ Usage:
       lookup_enum_for :your_model
     end
 
-  This lookup was intertionally not integrated 'seamlessly' with ActiveRecord since not
+  This lookup was intentionally not integrated 'seamlessly' with ActiveRecord since not
   everybody would want that, and monkey-patching other library (AR) is not really
-  a good thing, even if it results in more 'smooth' experience where everything works as if by magic.
+  a good thing, even if it results in a 'smoother' experience where everything works as if by magic.
 =end
 
 module ProstoCache
