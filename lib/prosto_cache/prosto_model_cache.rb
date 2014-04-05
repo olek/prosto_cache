@@ -194,10 +194,10 @@ module ProstoCache
         [].tap { |rows| raw_result.each_hash { |h| rows << h } }
       when 'Mysql2::Result'
         [].tap { |rows| raw_result.each(:as => :hash) { |h| rows << h } }
-      when 'PGresult'
+      when 'PGresult', 'PG::Result'
         raw_result.map(&:to_hash)
       else
-        fail "Result class #{raw_result.class.name} in unsupported"
+        fail "Result class #{raw_result.class.name} is unsupported"
       end
       array_result.map(&:symbolize_keys).first
     end
