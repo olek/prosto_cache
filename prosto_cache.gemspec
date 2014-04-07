@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name = "prosto_cache"
-  spec.version = "0.2.2"
+  spec.version = "0.2.4"
 
   spec.licenses = ["MIT"]
   spec.authors = ["Olek Poplavsky"]
